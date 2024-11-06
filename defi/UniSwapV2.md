@@ -131,7 +131,7 @@ swap 有 4个入参; amount0Out 和 amount1Out 表示兑换结果要转出的 to
 
 第一步先校验兑换结果的数量是否有一个大于 0，然后读取出两个代币的 reserve,，之后再校验兑换数量是否小于 reserve
 
-```text
+```Solidity
 { // scope for _token{0,1}, avoids stack too deep errors
 address _token0 = token0;
 
@@ -156,7 +156,7 @@ balance1 = IERC20(_token1).balanceOf(address(this));
 
 如果 data 参数长度大于 0，则将 to 地址转为 IUniswapV2Callee并调用其uniswapV2Call()函数，这其实就是一个回调函数，to 地址需要实现该接口。
 
-```text
+```Solidity
 if (data.length > 0) IUniswapV2Callee(to).uniswapV2Call(msg.sender, amount0Out, amount1Out, data);
 ```
 
@@ -166,7 +166,7 @@ if (data.length > 0) IUniswapV2Callee(to).uniswapV2Call(msg.sender, amount0Out, 
 
 假设转入的是 token0，转出的是 token1，转入数量为 100，转出数量为 200。那么，下面几个值将如下:
 
-```text
+```Solidity
 amount0Outln =100
 amount1ln=0
 amount0Out =0
@@ -175,7 +175,7 @@ amount1Out=200
 
 而 reserve0 和 reserve1 假设分别为 1000 和 2000，没进行兑换交易之前，balance{0,1}和 reserve{0,1} 是相等的。而完成了代币的转入和转出之后，其实，balance0 就变成了1000+100-0=1100，balance1 变成了 2000+0-200=1800。整理成公式则如下:
 
-```text
+```Solidity
 balance0 =reserve0 + amountOin -amoutOOui
 
 balance1= reserve1 + amountlIn-amout1Out
@@ -183,7 +183,7 @@ balance1= reserve1 + amountlIn-amout1Out
 
 反推一下就得到:
 
-```text
+```Solidity
 amountin =balance-(reserve- amountOut)
 ```
 
@@ -195,7 +195,7 @@ Uniswap V2 中的 闪电兑换（Flash Swap）是一种强大的功能，允许�
 
 从代码层面来说，闪电兑换的触发在 UniswapV2Pair 合约的 swap 函数里的，该函数里有这么一行代码:
 
-```text
+```Solidity
 if (data.length >0) lUniswapV2Callee(to).uniswapV2Cal(msg.sender, amountOOut, amount1Out, data);
 ```
 
@@ -215,7 +215,7 @@ if (data.length >0) lUniswapV2Callee(to).uniswapV2Cal(msg.sender, amountOOut, am
 
 用户调用 swap 函数时，可以借出 amount0Out 和/或 amount1Out 数量的代币。此时，用户无需提前提供资金抵押，但必须在同一笔交易内通过回调函数 UniswapV2Call 来完成相应的操作。
 
-```text
+```Solidity
 pair.swap(amount0Out, amount1Out, to, data);
 ```
 
@@ -225,7 +225,7 @@ pair.swap(amount0Out, amount1Out, to, data);
 
 当 swap 函数被执行并检测到 data 不为空时，合约会调用一个回调函数 UniswapV2Call，允许用户在这个过程中执行自定义逻辑。这就是闪电兑换的核心步骤。
 
-```text
+```Solidity
 function uniswapV2Call(address sender, uint amount0, uint amount1, bytes calldata data) external {
     // 执行自定义的闪电兑换逻辑
 }
@@ -251,7 +251,7 @@ function uniswapV2Call(address sender, uint amount0, uint amount1, bytes calldat
 
 **7.2.5.Uniswap v2 闪电兑换案例**
 
-```text
+```Solidity
 pragma solidity =0.6.6;
 
 import '@uniswap/v2-core/contracts/interfaces/IUniswapV2Callee.sol';

@@ -133,7 +133,7 @@ Uniswap V3 支持多种手续费模型，LPs 可以根据不同的市场状况�
 
 - **检查价格范围**
 
-```text
+```Solidity
 require(sqrtPriceX96 >= MIN_SQRT_RATIO && sqrtPriceX96 < MAX_SQRT_RATIO, 'R');
 ```
 
@@ -141,7 +141,7 @@ require(sqrtPriceX96 >= MIN_SQRT_RATIO && sqrtPriceX96 < MAX_SQRT_RATIO, 'R');
 
 - **计算比率**
 
-```text
+```Solidity
 uint256 ratio = uint256(sqrtPriceX96) << 32;
 ```
 
@@ -151,7 +151,7 @@ uint256 ratio = uint256(sqrtPriceX96) << 32;
 
 通过多个内联的 assembly 块，函数执行了一系列位移操作，逐步确定比率 ratio 的最高有效位（most significant bit，msb）。这种方式用于加速找到 ratio 在二进制中的位置，类似于高效的对数计算。
 
-```text
+```Solidity
 assembly {
     let f := shl(7, gt(r, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF))
     msb := or(msb, f)
@@ -166,7 +166,7 @@ assembly {
 
 通过对 ratio 的最高有效位进行处理，计算出以 2 为底的对数值 log_2。
 
-```text
+```Solidity
 int256 log_2 = (int256(msb) - 128) << 64;
 ```
 
@@ -178,7 +178,7 @@ int256 log_2 = (int256(msb) - 128) << 64;
 
 - **计算 log_sqrt10001**
 
-```text
+```Solidity
 int256 log_sqrt10001 = log_2 * 255738958999603826347141; // 128.128 number
 ```
 
@@ -186,7 +186,7 @@ int256 log_sqrt10001 = log_2 * 255738958999603826347141; // 128.128 number
 
 - **计算 Tick 的上限和下限**
 
-```text
+```Solidity
 int24 tickLow = int24((log_sqrt10001 - 3402992956809132418596140100660247210) >> 128);
 int24 tickHi = int24((log_sqrt10001 + 291339464771989622907027621153398088495) >> 128);
 ```
@@ -195,7 +195,7 @@ int24 tickHi = int24((log_sqrt10001 + 291339464771989622907027621153398088495) >
 
 - **确定最终的 Tick 值**
 
-```text
+```Solidity
 tick = tickLow == tickHi ? tickLow : getSqrtRatioAtTick(tickHi) <= sqrtPriceX96 ? tickHi : tickLow;
 ```
 
@@ -222,7 +222,7 @@ tick = tickLow == tickHi ? tickLow : getSqrtRatioAtTick(tickHi) <= sqrtPriceX96 
 
 **1.1.Pool Mint 函数**
 
-```text
+```Solidity
 function mint(
     address owner,
     int24 tickLower,
@@ -249,7 +249,7 @@ function mint(
 
 **输入验证**
 
-```text
+```Solidity
 require(tickLower < tickUpper, 'TLU');  // 确保下边界比上边界低
 require(tickLower >= TickMath.MIN_TICK && tickUpper <= TickMath.MAX_TICK, 'TLM');
 ```
@@ -261,7 +261,7 @@ require(tickLower >= TickMath.MIN_TICK && tickUpper <= TickMath.MAX_TICK, 'TLM')
 
 合约根据 tickLower 和 tickUpper 的价格区间、池子当前的价格和流动性情况，计算出所需的代币数量。
 
-```text
+```Solidity
 (amount0, amount1) = _modifyPosition(
     owner,
     tickLower,
@@ -284,7 +284,7 @@ _modifyPosition 函数通过以下步骤计算 LP 需要提供的代币数量，
 
 接下来，合约会从流动性提供者的地址中转移所需的代币（token0 和 token1），并将这些代币注入到流动性池中。
 
-```text
+```Solidity
 if (amount0 > 0) {
     _transferFrom(token0, owner, address(this), amount0);
 }
@@ -369,7 +369,7 @@ $$amount1=liquidity×(\sqrt {currentPrice}−\sqrt {priceLower})$$
 
 swap 函数位于 UniswapV3Pool.sol 合约中，负责执行两个代币间的交换。其函数签名如下：
 
-```text
+```Solidity
 function swap(
     address recipient,
     bool zeroForOne,
@@ -402,7 +402,7 @@ Uniswap V3 的 swap 流程通过多步操作动态调整价格、跨越价格区
 
 - sqrtPriceLimitX96 作为价格限制，确保交易的价格不会超出设定范围（防止滑点超出预期）。
 
-```text
+```Solidity
 require(sqrtPriceLimitX96 > MIN_SQRT_RATIO && sqrtPriceLimitX96 < MAX_SQRT_RATIO, 'Invalid sqrt price limit');
 ```
 
@@ -423,14 +423,14 @@ require(sqrtPriceLimitX96 > MIN_SQRT_RATIO && sqrtPriceLimitX96 < MAX_SQRT_RATIO
 
 **在当前价格区间执行交易**： 在初始的价格区间中，合约会计算当前价格对应的流动性和代币数量，并进行交易。
 
-```text
+```Solidity
 (amount0, amount1) = _swapStep(...);
 ```
 
 - _swapStep 函数是 swap 流程的核心步骤，在这里进行价格的调整和代币的交换。函数会： 计算基于当前流动性和价格变化的代币交换比例。 调整价格 sqrtPriceX96 并在此价格下完成交换。
 - **价格跨越 Tick**： 当价格跨越一个 Tick（即价格跨越一个区间边界），需要对流动性和价格进行更新。每个 Tick 定义了一个价格区间，当价格跨越该区间时，合约会检查下一个价格区间的流动性。
 
-```text
+```Solidity
 (amount0, amount1) = _crossTick(...);
 ```
 
@@ -449,7 +449,7 @@ Uniswap V3 引入了多级手续费系统，根据流动性池的手续费层级
 - 在每个 Tick 区间内，手续费根据交易量按比例计算并累积。
 - 累积的手续费会记录到流动性池中，流动性提供者可以在合适的时候提取这些手续费。
 
-```text
+```Solidity
 (uint256 feeAmount0, uint256 feeAmount1) = _collectFees(...);
 ```
 
@@ -457,7 +457,7 @@ Uniswap V3 引入了多级手续费系统，根据流动性池的手续费层级
 
 交易在达到指定的 sqrtPriceLimitX96 或 amountSpecified 被完全交换后结束。swap 函数返回实际的 amount0 和 amount1，表示最终交换的代币数量。
 
-```text
+```Solidity
 return (amount0, amount1);
 ```
 
