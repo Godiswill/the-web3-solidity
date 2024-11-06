@@ -77,6 +77,7 @@ Uniswap V2 的核心智能合约组件如下：
 - sdk-core
 - info
 - v2-subgraph
+- v2-core
 - v2-periphery
 - solidity-lib
 
@@ -329,7 +330,7 @@ Uniswap 的 **liquidity-staker** 合约用于激励流动性提供者（LPs）�
 
 - **质押 (stake)**：用户可以将 Uniswap V2 的 LP 代币质押到合约中。通过调用 stake 函数，用户提供的代币会被锁定在合约内，并且开始累积奖励。
 
-```
+```Solidity
 function stake(uint256 amount) external nonReentrant updateReward(msg.sender);
 ```
 
@@ -337,7 +338,7 @@ function stake(uint256 amount) external nonReentrant updateReward(msg.sender);
 
 - **奖励累积 (rewardPerToken 和 earned)**： rewardPerToken 计算每个 LP 代币可以获得的奖励代币数量。 earned 则计算某个用户可以领取的奖励数量。
 
-```
+```Solidity
 function rewardPerToken() public view returns (uint256); 
 function earned(address account) public view returns (uint256);
 ```
@@ -346,7 +347,7 @@ function earned(address account) public view returns (uint256);
 
 - **提取质押与奖励 (withdraw 和 getReward)**： withdraw：用户可以提取部分或全部质押的 LP 代币。 getReward：用户可以领取累计的奖励代币。
 
-```
+```Solidity
 function withdraw(uint256 amount) public nonReentrant updateReward(msg.sender); 
 function getReward() public nonReentrant updateReward(msg.sender);
 ```
@@ -355,7 +356,7 @@ function getReward() public nonReentrant updateReward(msg.sender);
 
 - **退出 (exit)**：退出操作可以让用户同时提取质押的代币并领取所有奖励。
 
-```
+```Solidity
 function exit() external;
 ```
 
@@ -363,7 +364,7 @@ function exit() external;
 
 - **奖励通知 (notifyRewardAmount)**：项目方可以调用该函数来设置或调整奖励分发的额度和速率。
 
-```
+```Solidity
 function notifyRewardAmount(uint256 reward) external onlyRewardsDistribution;
 ```
 
