@@ -179,7 +179,7 @@ Vyper 的语法风格类似于 Python，它使用缩进来表示代码块的层�
 
 在 Vyper 中，变量需要声明其类型。这与 Solidity 的隐式类型声明不同，Vyper 强制变量有明确的类型。
 
-```python
+```Vyper
 # 声明一个整数变量
 count: public(int128)
 
@@ -194,7 +194,7 @@ balances: public(map(address, uint256))
 
 Vyper 使用 @external 或 @internal装饰器来标识外部或内部函数。外部函数可以被合约外部调用，而内部函数只能在合约内部调用。
 
-```python
+```Vyper
 @external
 def set_count(_count: int128):
     self.count = _count
@@ -214,7 +214,7 @@ def _add(x: int128, y: int128) -> int128:
 
 Vyper 支持常量的声明，常量值一旦定义便不可更改。
 
-```python
+```Vyper
 MAX_SUPPLY: constant(uint256) = 1000000
 ```
 
@@ -222,7 +222,7 @@ MAX_SUPPLY: constant(uint256) = 1000000
 
 Vyper 中可以通过 public 修饰符使状态变量公开访问，这样会自动生成对应的 getter 函数。
 
-```python
+```Vyper
 balance: public(uint256)
 ```
 
@@ -232,7 +232,7 @@ balance: public(uint256)
 
 Vyper 支持事件，用于在链上发出通知。
 
-```python
+```Vyper
 event Transfer:
     _from: indexed(address)
     _to: indexed(address)
@@ -245,7 +245,7 @@ event Transfer:
 
 Vyper 支持 if-else 条件控制语句。
 
-```python
+```Vyper
 @external
 def transfer(_to: address, _amount: uint256):
     if self.balances[msg.sender] >= _amount:
@@ -262,7 +262,7 @@ def transfer(_to: address, _amount: uint256):
 
 Vyper 支持结构体，类似于 Solidity 中的 struct，用于将多个数据聚合成一个类型。
 
-```python
+```Vyper
 struct Person:
     name: String[64]
     age: int128
@@ -276,7 +276,7 @@ person: public(Person)
 
 Vyper 中的 msg 和 tx 对象类似于 Solidity。
 
-```python
+```Vyper
 # 访问发送者地址
 sender: address = msg.sender
 
@@ -292,7 +292,7 @@ balance: uint256 = self.balance
 
 @external 修饰符用于定义外部可调用的函数。这意味着合约外部的用户或其他智能合约可以调用带有 @external 装饰器的函数。
 
-```python
+```Vyper
 @external
 def set_value(_value: int128):
     self.value = _value
@@ -304,7 +304,7 @@ def set_value(_value: int128):
 
 @internal 修饰符用于定义只能由合约内部调用的函数。这意味着只有该合约中的其他函数才能调用这个函数，而外部调用将无法访问它。
 
-```python
+```Vyper
 @internal
 def _add(x: int128, y: int128) -> int128:
     return x + y
@@ -317,7 +317,7 @@ def _add(x: int128, y: int128) -> int128:
 
 @payable 修饰符允许一个函数接收以太币。带有 @payable 修饰符的函数可以接受发送到合约的以太币。
 
-```python
+```Vyper
 @external
 @payable
 def deposit():
@@ -331,7 +331,7 @@ def deposit():
 
 @view 修饰符用于声明该函数不会修改链上的状态（不会改变合约的存储）。带有@view 修饰符的函数仅用于读取链上数据，不会消耗 gas。
 
-```python
+```Vyper
 @external
 @view
 def get_balance(_addr: address) -> uint256:
@@ -345,7 +345,7 @@ def get_balance(_addr: address) -> uint256:
 
 @pure 修饰符用于声明该函数既不会读取合约的存储，也不会修改链上的状态。它只能使用函数输入参数进行计算或操作。
 
-```python
+```Vyper
 @external
 @pure
 def multiply(a: int128, b: int128) -> int128:
@@ -359,7 +359,7 @@ def multiply(a: int128, b: int128) -> int128:
 
 Vyper 中并没有直接的 @nonpayable修饰符，但默认情况下，任何没有 @payable修饰符的函数都会被视为非支付函数。如果你不希望函数接受以太币，只需不加 @payable即可。
 
-```python
+```Vyper
 @external
 def set_owner(_owner: address):
     self.owner = _owner
@@ -369,7 +369,7 @@ def set_owner(_owner: address):
 
 Vyper 不支持像 Solidity 那样的自定义修饰符（modifier 关键字），不过你可以在每个函数内部实现自定义的权限控制或其他逻辑。例如，实现一个只有合约拥有者才能调用的函数：
 
-```python
+```Vyper
 owner: public(address)
 
 @external
@@ -400,7 +400,7 @@ def set_new_owner(_new_owner: address):
 
 以下是一个基于 Vyper 的简单 ERC20 代币合约示例：
 
-```python
+```Vyper
 # ERC20 代币标准
 
 name: public(String[64])
@@ -464,7 +464,7 @@ Vyper 提供了一种简单、安全的智能合约编写方式，其限制有�
 
 ![图像](../picture/uniswapv1-1.png)
 
-```python
+```Vyper
 exchangeTemplate: public(address)
 
 @public
@@ -480,7 +480,7 @@ def initializeFactory(template: address):
 
 ![图像](../picture/uniswapv1-2.png)
 
-```python
+```Vyper
 @public
 def createExchange(token: address) -> address:
     // 校验入参不是零地址
@@ -510,7 +510,7 @@ def createExchange(token: address) -> address:
 
 ![图像](../picture/uniswapv1-3.png)
 
-```python
+```Vyper
 // 在Vyper中，@payable 修饰符允许函数接收ETH。当用户调用带有 @payable 修饰符的函数时，
 // ETH会自动从用户的地址转移到当前合约中。因此，在 addLiquidity 函数中，
 // ETH是在用户调用该函数时自动转移到合约中的。
@@ -585,7 +585,7 @@ def addLiquidity(min_liquidity: uint256, max_tokens: uint256, deadline: timestam
 
 ![图像](../picture/uniswapv1-4.png)
 
-```python
+```Vyper
 amount：用户希望移除的流动性代币（UNI）的数量。
 min_eth：用户希望提取的最小ETH数量。
 min_tokens：用户希望提取的最小代币数量。
@@ -629,7 +629,7 @@ def removeLiquidity(amount: uint256, min_eth: uint256(wei), min_tokens: uint256,
 
 根据恒定乘积进行计算
 
-```python
+```Vyper
 input_amount：用户提供的输入数量（代币或ETH）。
 input_reserve：交易所中输入类型的储备数量（代币或ETH）。
 output_reserve：交易所中输出类型的储备数量（代币或ETH）。
@@ -656,7 +656,7 @@ def getInputPrice(input_amount: uint256, input_reserve: uint256, output_reserve:
 
 根据恒定乘积进行计算
 
-```python
+```Vyper
 output_amount：用户希望获得的输出数量（代币或ETH）。
 input_reserve：交易所中输入类型的储备数量（代币或ETH）。
 output_reserve：交易所中输出类型的储备数量（代币或ETH）。
@@ -684,7 +684,7 @@ def getOutputPrice(output_amount: uint256, input_reserve: uint256, output_reserv
 
 ![图像](../picture/uniswapv1-5.png)
 
-```python
+```Vyper
 eth_sold：用户卖出的ETH数量。
 min_tokens：用户希望买入的最小代币数量。
 deadline：交易的最后执行时间。
@@ -717,7 +717,7 @@ def ethToTokenInput(eth_sold: uint256(wei), min_tokens: uint256, deadline: times
 
 ![图像](../picture/uniswapv1-6.png)
 
-```python
+```Vyper
 tokens_sold：用户卖出的代币数量。
 min_eth：用户希望买入的最小ETH数量。
 deadline：交易的最后执行时间。
@@ -753,7 +753,7 @@ def tokenToEthInput(tokens_sold: uint256, min_eth: uint256(wei), deadline: times
 
 ![图像](../picture/uniswapv1-7.png)
 
-```python
+```Vyper
 tokens_sold：用户卖出的代币数量。
 min_tokens_bought：用户希望买入的最小目标代币数量。
 min_eth_bought：用户希望买入的最小ETH数量。
