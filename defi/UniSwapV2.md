@@ -88,7 +88,7 @@ info 是 Uniswap 的数据分析项目，展示数据分析，主要是从 supgr
 
 另外，UniswapV2 其实还有一个流动性挖矿合约项目 liquidity-staker ，因为UniswapV2 的流动性挖矿只上线过一段短暂的时间，很少人知道这个项目，但是这个项目也是值得学习。
 
-![图像](../picture/UniSwapV2-1.png)
+![图像](../picture/uniswapv2-1.png)
 
 # 六.Uniswap V2 代码详解
 
@@ -111,19 +111,19 @@ info 是 Uniswap 的数据分析项目，展示数据分析，主要是从 supgr
 
 工厂合约则是用来部署配对合约的，通过工厂合约的 createPair() 函数来创建新的配对合约实例。
 
-![图像](../picture/UniSwapV2-2.png)
+![图像](../picture/uniswapv2-2.png)
 
 ## 4.添加流动性
 
-![图像](../picture/UniSwapV2-3.jpg)
+![图像](../picture/uniswapv2-3.jpg)
 
 ## 5.移除流动性
 
-![图像](../picture/UniSwapV2-4.jpg)
+![图像](../picture/uniswapv2-4.jpg)
 
 ## 6.兑换
 
-![图像](../picture/UniSwapV2-5.jpg)
+![图像](../picture/uniswapv2-5.jpg)
 
 **6.1.Swap 函数详解**
 
@@ -207,7 +207,7 @@ if (data.length >0) lUniswapV2Callee(to).uniswapV2Cal(msg.sender, amountOOut, am
 
 般情况下的兑换流程，是先支付 tokenA 再得到 tokenB 但闪电兑换却可以先得到 tokenB 最后再支付 tokenA。如下图:
 
-![图像](../picture/UniSwapV2-6.jpg)
+![图像](../picture/uniswapv2-6.jpg)
 
 **7.2.闪电兑换流程**
 

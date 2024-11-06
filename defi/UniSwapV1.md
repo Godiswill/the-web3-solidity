@@ -462,7 +462,7 @@ Vyper 提供了一种简单、安全的智能合约编写方式，其限制有�
 
 ## 创建交易合约模板地址
 
-![图像](../picture/UniSwapV1-1.png)
+![图像](../picture/uniswapv1-1.png)
 
 ```text
 exchangeTemplate: public(address)
@@ -478,7 +478,7 @@ def initializeFactory(template: address):
 
 ## 创建新的交易合约
 
-![图像](../picture/UniSwapV1-2.png)
+![图像](../picture/uniswapv1-2.png)
 
 ```text
 @public
@@ -508,7 +508,7 @@ def createExchange(token: address) -> address:
 
 ## 添加流动性
 
-![图像](../picture/UniSwapV1-3.png)
+![图像](../picture/uniswapv1-3.png)
 
 ```text
 // 在Vyper中，@payable 修饰符允许函数接收ETH。当用户调用带有 @payable 修饰符的函数时，
@@ -583,7 +583,7 @@ def addLiquidity(min_liquidity: uint256, max_tokens: uint256, deadline: timestam
 
 ## 删除流动性
 
-![图像](../picture/UniSwapV1-4.png)
+![图像](../picture/uniswapv1-4.png)
 
 ```text
 amount：用户希望移除的流动性代币（UNI）的数量。
@@ -682,7 +682,7 @@ def getOutputPrice(output_amount: uint256, input_reserve: uint256, output_reserv
 
 ## 交易-ETH到代币
 
-![图像](../picture/UniSwapV1-5.png)
+![图像](../picture/uniswapv1-5.png)
 
 ```text
 eth_sold：用户卖出的ETH数量。
@@ -715,7 +715,7 @@ def ethToTokenInput(eth_sold: uint256(wei), min_tokens: uint256, deadline: times
 
 ## 交易-代币到ETH
 
-![图像](../picture/UniSwapV1-6.png)
+![图像](../picture/uniswapv1-6.png)
 
 ```text
 tokens_sold：用户卖出的代币数量。
@@ -751,7 +751,7 @@ def tokenToEthInput(tokens_sold: uint256, min_eth: uint256(wei), deadline: times
 
 ## 交易-代币1到代币2
 
-![图像](../picture/UniSwapV1-7.png)
+![图像](../picture/uniswapv1-7.png)
 
 ```text
 tokens_sold：用户卖出的代币数量。
@@ -793,7 +793,7 @@ def tokenToTokenInput(tokens_sold: uint256, min_tokens_bought: uint256, min_eth_
 
 下图展示了Uniswap V1 智能合约的基本架构和交易流程：
 
-![图像](../picture/UniSwapV1-8.png)
+![图像](../picture/uniswapv1-8.png)
 
 **uniswap_factory.vy**：这是一个工厂合约，负责创建新的交易合约（exchange）。每个交易合约对应一个特定的代币对。
 

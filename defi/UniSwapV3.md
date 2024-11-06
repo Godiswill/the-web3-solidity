@@ -125,7 +125,7 @@ Uniswap V3 支持多种手续费模型，LPs 可以根据不同的市场状况�
 
 ## 1.创建并初始化流动性池
 
-![图像](../picture/UniSwapV3-1.jpg)
+![图像](../picture/uniswapv3-1.jpg)
 
 上面流程图中的代码都比较简单，难一点的就是 getTickAtSqrtRatio，getTickAtSqrtRatio 里面的代码解析
 
@@ -203,7 +203,7 @@ tick = tickLow == tickHi ? tickLow : getSqrtRatioAtTick(tickHi) <= sqrtPriceX96 
 
 ## 2.添加流动性
 
-![图像](../picture/UniSwapV3-2.jpg)
+![图像](../picture/uniswapv3-2.jpg)
 
 - MintParams 参数解释:  
 💡token0： 组成池子的token0  
@@ -339,11 +339,11 @@ $$amount1=liquidity×(\sqrt {currentPrice}−\sqrt {priceLower})$$
 
 ## 3.增加流动性
 
-![图像](../picture/UniSwapV3-3.png)
+![图像](../picture/uniswapv3-3.png)
 
 ## 4.减少流动性
 
-![图像](../picture/UniSwapV3-4.png)
+![图像](../picture/uniswapv3-4.png)
 
 函数入参除了指定头寸的 tokenld，还指定了liquidity，这是要移除的流动性数量。
 
@@ -351,19 +351,19 @@ $$amount1=liquidity×(\sqrt {currentPrice}−\sqrt {priceLower})$$
 
 ## 5.提取手续费收益
 
-![图像](../picture/UniSwapV3-5.jpg)
+![图像](../picture/uniswapv3-5.jpg)
 
 ## 6.销毁头寸
 
-![图像](../picture/UniSwapV3-6.jpg)
+![图像](../picture/uniswapv3-6.jpg)
 
 ## 7.兑换
 
-![图像](../picture/UniSwapV3-7.jpg)
+![图像](../picture/uniswapv3-7.jpg)
 
 - 其中：需要跨多个池子的编码方式如下：
 
-![图像](../picture/UniSwapV3-8.png)
+![图像](../picture/uniswapv3-8.png)
 
 7.1.**swap 函数概述**
 
